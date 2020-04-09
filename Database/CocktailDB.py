@@ -1,14 +1,17 @@
 import mysql.connector
+from mysql.connector import errorcode
 
-#establishing DB Connection (locally)
-connection = mysql.connector.connect(user = 'root', password = 'Database435', host = '127.0.0.1', database = 'Cocktail')
-
-if connection.is_connected():
+try:
+  cnx = mysql.connector.connect(user = 'ml1774', password = 'ml1774123', host = 'localhost', database = 'ml1774')
+except mysql.connector.Error as err:
+  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+    print("Something is wrong with your user name or password")
+  elif err.errno == errorcode.ER_BAD_DB_ERROR:
+    print("Database does not exist")
+  else:
+    print(err)
+else:
     print("Connection Established")
+    cnx.close()
 
-# Creating a cursor object using the cursor() method
-cursor = connection.cursor()
-
-# Closing Connection
-connection.close()
-
+#pip install --user mysql-connector-python
