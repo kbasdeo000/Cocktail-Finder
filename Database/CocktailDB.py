@@ -1,5 +1,4 @@
 #12.42.205.8
-import mysql.connector
 from flask import Flask, render_template, request, redirect
 from flask_mysqldb import MySQL
 
