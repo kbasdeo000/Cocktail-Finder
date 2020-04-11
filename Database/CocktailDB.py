@@ -2,6 +2,23 @@
 import mysql.connector
 from flask import Flask, render_template, request, redirect
 from flask_mysqldb import MySQL
+import pymysql
+
+# GCP SQL connection
+con = pymysql.connect(host = '35.184.2.237', user = 'root', password = 'Database435', db = 'Recipes')
+
+if con.open:
+    print("Open")
+
+with con:
+    cur = con.cursor()
+    cur.execute("SELECT VERSION()")
+
+    version = cur.fetchone()
+
+    print("Database version: {}".format(version[0]))
+
+print(cur.execute('describe Cocktail'))
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] ='remotemysql.com'
