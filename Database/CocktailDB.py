@@ -21,10 +21,10 @@ with con:
 print(cur.execute('describe Cocktail'))
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] ='remotemysql.com'
-app.config['MYSQL_USER'] ='GQ7oHUjvYc'
-app.config['MYSQL_PASSWORD'] ='hpLN89qQdb'
-app.config['MYSQL_DB'] ='GQ7oHUjvYc'
+app.config['MYSQL_HOST'] ='35.184.2.237'
+app.config['MYSQL_USER'] ='root'
+app.config['MYSQL_PASSWORD'] ='Database435'
+app.config['MYSQL_DB'] ='Recipes'
 
 mysql = MySQL(app)
 
@@ -42,7 +42,7 @@ def index():
 
         # Preparing SQL query to INSERT a record into the database.
         insert_stmt = (
-            "INSERT INTO cocktails(cocktailName,ingredients)"
+            "INSERT INTO Cocktail(RecipeID,RecipeName)"
             "VALUES(%s, %s)"
         )
         data_input = (cockName, cockIngredient)
@@ -59,7 +59,7 @@ def index():
 def cocktails():
     # Creating a cursor object using the cursor() method
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM cocktails")
+    cursor.execute("SELECT * FROM Cocktail")
     userDetails = cursor.fetchall()
     return render_template('cocktails.html', userDetails=userDetails)
 
