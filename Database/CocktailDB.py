@@ -1,24 +1,9 @@
 #12.42.205.8
-import mysql.connector
-from flask import Flask, render_template, request, redirect
+
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_mysqldb import MySQL
 import pymysql
 
-# GCP SQL connection
-con = pymysql.connect(host = '35.184.2.237', user = 'root', password = 'Database435', db = 'Recipes')
-
-if con.open:
-    print("Open")
-
-with con:
-    cur = con.cursor()
-    cur.execute("SELECT VERSION()")
-
-    version = cur.fetchone()
-
-    print("Database version: {}".format(version[0]))
-
-print(cur.execute('describe Cocktail'))
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] ='35.184.2.237'
@@ -27,9 +12,6 @@ app.config['MYSQL_PASSWORD'] ='Database435'
 app.config['MYSQL_DB'] ='Recipes'
 
 mysql = MySQL(app)
-
-#conn = mysql.connector.connect(user='root', password='Matter1332*', host='127.0.0.1', database='cocktail')
-#conn = mysql.connector.connect(user='GQ7oHUjvYc', password='hpLN89qQdb', host='remotemysql.com', database='GQ7oHUjvYc')
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method =='POST':
@@ -53,6 +35,16 @@ def index():
         #return 'success'
         return redirect('/cocktails')
     return render_template('index.html')
+
+@app.route("/livesearch", methods=["POST","GET"])
+def livesearch():
+    searchbox = request.form.get("text")
+    cursor = mysql.connection.cursor()
+    query = "SELECT RecipeID from Cocktail where RecipeID LIKE '{}%' order by RecipeID".format(searchbox)
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return jsonify(result)
+
 
 
 @app.route('/cocktails')
