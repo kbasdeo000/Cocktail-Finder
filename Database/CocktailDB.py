@@ -1,7 +1,7 @@
 #12.42.205.8
 
 from flask import Flask, render_template, request, redirect, jsonify
-from flask_mysqldb import MySQL
+from flaskext.mysql import MySQL
 import pymysql
 
 
